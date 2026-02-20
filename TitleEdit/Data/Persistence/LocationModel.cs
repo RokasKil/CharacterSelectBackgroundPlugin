@@ -1,17 +1,23 @@
 using System;
 using System.Collections.Generic;
 using System.Numerics;
+using Newtonsoft.Json;
 using TitleEdit.Data.Character;
 using TitleEdit.Data.Lobby;
+using TitleEdit.Utility;
 
 namespace TitleEdit.Data.Persistence
 {
     // Could seperate these into title screen and character select but I kinda want to allow users to easily convert between the two maybe (also am lazy)
     public struct LocationModel
     {
-        public static readonly int CurrentVersion = 5;
+        public const int CURRENT_VERSION = 6;
+        // Festival count post 7.4
+        public const int FESTIVAL_COUNT = 8;
+        // Festival count pre 7.4
+        public const int OLD_FESTIVAL_COUNT = 4;
 
-        public int Version = CurrentVersion;
+        public int Version = CURRENT_VERSION;
         public LocationType LocationType = LocationType.TitleScreen;
         public TitleScreenLogo TitleScreenLogo = TitleScreenLogo.Dawntrail;
         public string TerritoryPath = ""; // TODO: Why am I even saving both
@@ -34,8 +40,9 @@ namespace TitleEdit.Data.Persistence
         public HashSet<ulong> Active = [];
         public HashSet<ulong> Inactive = [];
         public Dictionary<ulong, short> VfxTriggerIndexes = [];
-        // TODO: Rework this into the new Festival objects
-        public uint[] Festivals = new uint[4];
+        // Used to be an uint[], the converter converts those to Festival struct that is made out of 2 ushort
+        [JsonConverter(typeof(FestivalJsonConverter))]
+        public Festival[] Festivals = new Festival[FESTIVAL_COUNT];
         public bool SaveLayout = false;
         public bool UseVfx = true;
         public bool SaveHousing = true;

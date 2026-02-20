@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Dalamud.NET.Sdk/13.1.0">
+<Project Sdk="Dalamud.NET.Sdk/14.0.1">
 
     <PropertyGroup>
-        <Version>3.0.6.2</Version>
+        <Version>3.0.6.5</Version>
         <PackageProjectUrl>https://github.com/RokasKil/TitleEdit</PackageProjectUrl>
-        <TargetFramework>net10.0-windows</TargetFramework>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

@@ -3,7 +3,6 @@ using Dalamud.Plugin.Services;
 using Dalamud.Utility;
 using FFXIVClientStructs.FFXIV.Client.Game.Character;
 using FFXIVClientStructs.FFXIV.Client.LayoutEngine;
-using FFXIVClientStructs.Interop;
 using Lumina.Excel.Sheets;
 using Newtonsoft.Json;
 using System;
@@ -14,14 +13,13 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using FFXIVClientStructs.FFXIV.Client.Game;
 using TitleEdit.Data.Character;
 using TitleEdit.Data.Layout;
 using TitleEdit.Data.Persistence;
 using TitleEdit.Extensions;
 using TitleEdit.Utility;
 using static FFXIVClientStructs.FFXIV.Client.Game.Character.DrawDataContainer;
-using HousingFurniture = FFXIVClientStructs.FFXIV.Client.Game.HousingFurniture;
+using Festival = TitleEdit.Data.Persistence.Festival;
 
 namespace TitleEdit.PluginServices
 {
@@ -261,7 +259,10 @@ namespace TitleEdit.PluginServices
             locationModel.Active = active;
             locationModel.Inactive = inactive;
             locationModel.VfxTriggerIndexes = vfxTriggerIndexes;
-            locationModel.Festivals = new Span<uint>(Services.LayoutService.LayoutManager->ActiveFestivals.GetPointer(0), 4).ToArray();
+            locationModel.Festivals = Services.LayoutService.LayoutManager->ActiveFestivals
+                                      .ToArray()
+                                      .Select(item => new Festival(item))
+                                      .ToArray();
 
             if (locationModel is { SaveLayout: true, SaveHousing: true })
             {
@@ -353,9 +354,9 @@ namespace TitleEdit.PluginServices
 
         public void Validate(LocationModel locationModel)
         {
-            if (locationModel.Version != LocationModel.CurrentVersion)
+            if (locationModel.Version != LocationModel.CURRENT_VERSION)
             {
-                throw new($"Location Version is not valid {LocationModel.CurrentVersion}");
+                throw new($"Location Version is not valid {LocationModel.CURRENT_VERSION}");
             }
 
             if (locationModel.TitleScreenOverride == null)
@@ -373,6 +374,11 @@ namespace TitleEdit.PluginServices
                 if (locationModel is { Estate: not null, Plots: not null })
                 {
                     throw new($"Location has both plot and estate data defined");
+                }
+
+                if (locationModel.Festivals != null && locationModel.Festivals.Length != LocationModel.FESTIVAL_COUNT)
+                {
+                    throw new($"Location has an invalid festival count {locationModel.Festivals.Length}, should be {LocationModel.FESTIVAL_COUNT}");
                 }
             }
             else if (!locationModel.TitleScreenOverride.IsInAvailableExpansion())

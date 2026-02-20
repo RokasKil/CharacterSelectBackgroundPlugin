@@ -103,7 +103,7 @@ namespace TitleEdit.PluginServices.Lobby
             // Common method that is called when setting an addon to be visible, used to hide _TitleLogo when using dawntrail title screen
             // so it can be shown when TitleLogoRefresh gets called to trigger the logo animation
             // if we don't do this non DT logos will show at the start and then flash when animation triggers
-            showAddonHook = Hook<ShowAddon>("E8 ?? ?? ?? ?? 80 A3 ?? ?? ?? ?? ?? 40 80 E7", ShowAddonDetour);
+            showAddonHook = Hook<ShowAddon>("E8 ?? ?? ?? ?? 80 A3 ?? ?? ?? ?? ?? 40 80 E7 ?? 40 08 BB ?? ?? ?? ?? EB ?? 44 8B C6", ShowAddonDetour);
 
             // To animate/skip animation of title logo
             Services.AddonLifecycle.RegisterListener(AddonEvent.PostSetup, "_TitleLogo", TitleLogoPostSetup);

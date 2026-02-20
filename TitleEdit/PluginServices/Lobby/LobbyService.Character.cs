@@ -92,7 +92,7 @@ namespace TitleEdit.PluginServices.Lobby
                     }
 
                     // if needed we force draw character and mount cause they're weird sometimes
-                    if (CurrentCharacter->GameObject.RenderFlags != 0 && CurrentCharacter->GameObject.RenderFlags != 0x40 && CurrentCharacter->GameObject.IsReadyToDraw())
+                    if (CurrentCharacter->GameObject.RenderFlags != 0 && CurrentCharacter->GameObject.RenderFlags != (VisibilityFlags)0x40 && CurrentCharacter->GameObject.IsReadyToDraw())
                     {
                         Services.Log.Debug($"Drawing character {(nint)CurrentCharacter:X} {CurrentCharacter->GameObject.RenderFlags:X}");
                         CurrentCharacter->GameObject.EnableDraw();

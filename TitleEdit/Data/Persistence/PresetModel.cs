@@ -4,9 +4,9 @@ namespace TitleEdit.Data.Persistence
 {
     public struct PresetModel
     {
-        public static readonly int CurrentVersion = 5;
+        public const int CURRENT_VERSION = 6;
 
-        public int? Version = CurrentVersion;
+        public int? Version = CURRENT_VERSION;
         public string Name = "";
         public string Author = "";
         public CameraFollowMode CameraFollowMode = CameraFollowMode.Inherit;

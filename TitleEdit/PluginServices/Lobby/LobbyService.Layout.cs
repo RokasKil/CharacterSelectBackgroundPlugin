@@ -35,10 +35,10 @@ namespace TitleEdit.PluginServices.Lobby
         {
             // Called when game does some lobby weather setting - we use it as an indicator to set scene details like weather, time and layout
             // Called on scene load and on displayed character switch
-            lobbySetWeatherHook = Hook<CharSelectSetWeatherDelegate>("48 83 EC ?? 0F B7 05", LobbySetWeatherDetour);
+            lobbySetWeatherHook = Hook<CharSelectSetWeatherDelegate>("E8 ?? ?? ?? ?? E8 ?? ?? ?? ?? B3 ?? E9", LobbySetWeatherDetour);
             // Sets the initial weather on scene load, we change the weather here early to avoid the ugly weather transitions
             // We still have to fight the game resetting that in LobbySetWeatherDetour, also use this to load in furniture to prevent pop-in
-            layoutManagerInitWeatherHook = Hook<LayoutManagerInitWeatherDelegate>("E8 ?? ?? ?? ?? 83 BD ?? ?? ?? ?? ?? 74 ?? 48 8B 5D", LayoutManagerInitWeatherDetour);
+            layoutManagerInitWeatherHook = Hook<LayoutManagerInitWeatherDelegate>("E8 ?? ?? ?? ?? 83 BD ?? ?? ?? ?? ?? 74 ?? 48 8B 9D", LayoutManagerInitWeatherDetour);
             // Initializes something with the OutdoorAreaLayoutData structs, we use this to set outside housing plots to minimize pop-in
             layoutManagerInitHousingHook = Hook<LayoutManagerInitHousingDelegate>("40 57 48 83 EC ?? 48 8B B9 ?? ?? ?? ?? 4C 8B C7", LayoutManagerInitHousingDetour);
         }
@@ -121,17 +121,23 @@ namespace TitleEdit.PluginServices.Lobby
 
             if (model is { SaveFestivals: true, Festivals: not null })
             {
-                fixed (uint* pFestivals = model.Festivals)
+                fixed (GameMain.Festival* pFestivals = new GameMain.Festival[LocationModel.FESTIVAL_COUNT])
                 {
-                    Services.LayoutService.LayoutManager->SetActiveFestivals((GameMain.Festival*)pFestivals);
+                    for (int i = 0; i < LocationModel.FESTIVAL_COUNT; i++)
+                    {
+                        pFestivals[i].Id = model.Festivals[i].Id;
+                        pFestivals[i].Phase = model.Festivals[i].Phase;
+                    }
+
+                    Services.LayoutService.LayoutManager->SetActiveFestivals(pFestivals);
                 }
             }
             else
             {
                 Services.Log.Debug("Unsetting festivals");
-                fixed (uint* pFestivals = new uint[4])
+                fixed (GameMain.Festival* pFestivals = new GameMain.Festival[LocationModel.FESTIVAL_COUNT])
                 {
-                    Services.LayoutService.LayoutManager->SetActiveFestivals((GameMain.Festival*)pFestivals);
+                    Services.LayoutService.LayoutManager->SetActiveFestivals(pFestivals);
                 }
             }
 

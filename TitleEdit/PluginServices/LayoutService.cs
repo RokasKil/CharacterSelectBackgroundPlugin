@@ -21,7 +21,7 @@ namespace TitleEdit.PluginServices
 
         public unsafe delegate void VfxLayoutInstanceSetVfxTriggerIndexDelegate(VfxLayoutInstance* vfxInstance, int index);
 
-        public unsafe delegate void LayoutWorldInitManagerDelegate(nint layoutWorld, uint p2, nint territoryPath, uint territoryId, uint layerFilterKey, nint festivals, uint contentFinderConditionId);
+        public delegate void LayoutWorldInitManagerDelegate(nint layoutWorld, uint p2, nint territoryPath, uint territoryId, uint layerFilterKey, nint festivals, uint contentFinderConditionId);
 
         private Hook<VfxLayoutInstanceSetVfxTriggerIndexDelegate> vfxLayoutInstanceSetVfxTriggerIndexHook = null!;
         private Hook<LayoutWorldInitManagerDelegate> layoutWorldInitManagerHook = null!;
@@ -45,7 +45,8 @@ namespace TitleEdit.PluginServices
             InstanceType.BgPart,
             InstanceType.Light,
             InstanceType.Vfx,
-            InstanceType.SharedGroup
+            InstanceType.SharedGroup,
+            InstanceType.Decal
         ];
 #if CALC_LAYOUT_UPDATE
         private Stopwatch updateSW = new();
@@ -70,9 +71,9 @@ namespace TitleEdit.PluginServices
 #endif
             TerritoryChanged();
             EnableHooks();
-            HookLayoutInstance("48 8D 0D ?? ?? ?? ?? 66 90 48 89 50");                                                          // BgPart
-            HookLayoutInstance("48 8D 0D ?? ?? ?? ?? 4C 89 70 ?? 44 89 70");                                                    // Light
-            HookLayoutInstance("48 8D 05 ?? ?? ?? ?? 48 89 01 33 D2 48 89 51 ?? 48 89 51");                                     // Vfx
+            HookLayoutInstance("48 8D 0D ?? ?? ?? ?? 66 90 48 89 50"); // BgPart
+            HookLayoutInstance("48 8D 0D ?? ?? ?? ?? 4C 89 70 ?? 44 89 70"); // Light
+            HookLayoutInstance("48 8D 05 ?? ?? ?? ?? 48 89 01 33 D2 48 89 51 ?? 48 89 51"); // Vfx
             HookLayoutInstance("48 8D 05 ?? ?? ?? ?? 48 89 07 48 8D 05 ?? ?? ?? ?? 48 89 47 ?? 48 8D 05 ?? ?? ?? ?? 48 89 77"); // SharedGroup
         }
 

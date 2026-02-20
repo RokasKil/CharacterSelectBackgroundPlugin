@@ -1,3 +1,4 @@
+using System;
 using Newtonsoft.Json;
 using System.Linq;
 using TitleEdit.Data.Lobby;
@@ -8,7 +9,6 @@ namespace TitleEdit.PluginServices.Migration
 {
     public partial class MigrationService
     {
-
         public LocationModel MigrateLocation(string locationTextData) => MigrateLocation(locationTextData, out _);
 
         public LocationModel MigrateLocation(string locationTextData, out bool changed)
@@ -28,11 +28,15 @@ namespace TitleEdit.PluginServices.Migration
                     goto case 4;
                 case 4:
                     location = MigrateV4(location);
+                    goto case 5;
+                case 5:
+                    location = MigrateV5(location);
                     break;
                 default:
                     changed = false;
                     break;
             }
+
             return location;
         }
 
@@ -56,11 +60,11 @@ namespace TitleEdit.PluginServices.Migration
         {
             Services.Log.Info($"Migrating location to v4");
             location.Version = 4;
-            location.Festivals ??= new uint[4];
+            location.Festivals ??= new Festival[LocationModel.OLD_FESTIVAL_COUNT];
             location.Active ??= [];
             location.Inactive ??= [];
             location.VfxTriggerIndexes ??= [];
-            location.SaveFestivals = location.Festivals.Length == 4 && location.Festivals.Where(festival => festival != 0).Any();
+            location.SaveFestivals = location.Festivals.Length == LocationModel.OLD_FESTIVAL_COUNT && location.Festivals.Any(festival => festival is not { Id: 0, Phase: 0 });
             location.SaveLayout = location.UseVfx = (location.Active.Count > 0 || location.Inactive.Count > 0);
             return location;
         }
@@ -70,6 +74,21 @@ namespace TitleEdit.PluginServices.Migration
             Services.Log.Info($"Migrating location to v5");
             location.Version = 5;
             location.TitleScreenMovie = TitleScreenMovie.Unspecified;
+            return location;
+        }
+
+        private LocationModel MigrateV5(LocationModel location)
+        {
+            Services.Log.Info($"Migrating location to v6");
+            location.Version = 6;
+            var newFestivals = new Festival[LocationModel.FESTIVAL_COUNT];
+            if (location.Festivals != null)
+            {
+                Array.Copy(location.Festivals, newFestivals,
+                           Math.Min(location.Festivals.Length, LocationModel.FESTIVAL_COUNT));
+            }
+
+            location.Festivals = newFestivals;
             return location;
         }
     }
