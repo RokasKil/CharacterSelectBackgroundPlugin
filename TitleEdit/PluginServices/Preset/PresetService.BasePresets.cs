@@ -43,6 +43,14 @@ namespace TitleEdit.PluginServices.Preset
                             Position = new(-9.00f, 10.90f, 25.90f),
                             Rotation = -2.18f,
                             Scale = 0.60f
+                        },
+
+                        new()
+                        {
+                            ENpcId = 1025939,
+                            Position = new(-1.20f, -1.10f, 4.20f),
+                            Rotation = 2.55f,
+                            Scale = 3.50f
                         }
                     ]
                 }
@@ -64,10 +72,10 @@ namespace TitleEdit.PluginServices.Preset
                     [
                         new()
                         {
-                            ENpcId = 1022686,
-                            Position = new(0.24f, 0.10f, 4.80f),
-                            Rotation = -0.79f,
-                            Scale = 1.00f
+                            ENpcId = 1025939,
+                            Position = new(-0.26f, -0.10f, 4.90f),
+                            Rotation = -0.49f,
+                            Scale = 6.10f
                         }
                     ]
                 }
@@ -93,6 +101,13 @@ namespace TitleEdit.PluginServices.Preset
                             Position = new(-0.90f, 2.60f, 5.30f),
                             Rotation = -0.59f,
                             Scale = 0.70f
+                        },
+                        new()
+                        {
+                            ENpcId = 1025939,
+                            Position = new(-0.70f, 3.02f, 5.86f),
+                            Rotation = 0.17f,
+                            Scale = 1.80f
                         }
                     ]
                 }
@@ -143,6 +158,13 @@ namespace TitleEdit.PluginServices.Preset
                             Position = new(-26.90f, 4.00f, -196.60f),
                             Rotation = 1.31f,
                             Scale = 1.00f
+                        },
+                        new()
+                        {
+                            ENpcId = 1025939,
+                            Position = new(-25.60f, 4.20f, -198.90f),
+                            Rotation = 0.84f,
+                            Scale = 1.60f
                         }
                     ]
                 }
@@ -168,6 +190,13 @@ namespace TitleEdit.PluginServices.Preset
                             Position = new(-1.50f, -1.20f, 161.30f),
                             Rotation = 1.31f,
                             Scale = 39.00f
+                        },
+                        new()
+                        {
+                            ENpcId = 1025939,
+                            Position = new(203.90f, 4.50f, 351.70f),
+                            Rotation = 0.14f,
+                            Scale = 74.40f
                         }
                     ]
                 }
@@ -176,6 +205,48 @@ namespace TitleEdit.PluginServices.Preset
 
         private void AddTitleScreenPresets()
         {
+            AddPreset(new()
+            {
+                Name = "TE_Amaurot 1",
+                FileName = "?/TE_Amaurot 1.json",
+                BuiltIn = true,
+                LocationModel = new()
+                {
+                    LocationType = LocationType.TitleScreen,
+                    TitleScreenLogo = TitleScreenLogo.Shadowbringers,
+                    TerritoryPath = "ex3/01_nvt_n4/fld/n4f6/level/n4f6",
+                    TerritoryTypeId = 818,
+                    CameraPosition = new(22.773487f, -61.84117f, 757.2081f),
+                    Yaw = -1.1805015f,
+                    Roll = 0.0f,
+                    Pitch = 0.29725394f,
+                    Fov = 45.0f,
+                    WeatherId = 1,
+                    TimeOffset = 0,
+                    BgmId = 0,
+                    BgmPath = "music/ffxiv/orchestrion/bgm_orch_430.scd",
+                    SaveLayout = false,
+                    SaveFestivals = false,
+                    UiColor = UiColors.Dawntrail,
+                    Npcs =
+                    [
+                        new()
+                        {
+                            ENpcId = 1022686,
+                            Position = new(-316.60f, -72.60f, 829.80f),
+                            Rotation = 1.29f,
+                            Scale = 6.00f
+                        },
+                        new()
+                        {
+                            ENpcId = 1025939,
+                            Position = new(-492.80f, 19.70f, 1203.70f),
+                            Rotation = 2.90f,
+                            Scale = 27.30f
+                        }
+                    ]
+                }
+            });
             AddPreset(new()
             {
                 Name = "TE_Amaurot 2",
@@ -207,6 +278,13 @@ namespace TitleEdit.PluginServices.Preset
                             Position = new(0.00f, -719.10f, -49.40f),
                             Rotation = -0.31f,
                             Scale = 13.80f
+                        },
+                        new()
+                        {
+                            ENpcId = 1025939,
+                            Position = new(0.00f, -671.60f, -1978.00f),
+                            Rotation = 0.09f,
+                            Scale = 467.60f
                         }
                     ]
                 }
@@ -242,41 +320,13 @@ namespace TitleEdit.PluginServices.Preset
                             Position = new(-200.40f, -701.20f, -32.50f),
                             Rotation = 0.70f,
                             Scale = 1.00f
-                        }
-                    ]
-                }
-            });
-            AddPreset(new()
-            {
-                Name = "TE_Amaurot 1",
-                FileName = "?/TE_Amaurot 1.json",
-                BuiltIn = true,
-                LocationModel = new()
-                {
-                    LocationType = LocationType.TitleScreen,
-                    TitleScreenLogo = TitleScreenLogo.Shadowbringers,
-                    TerritoryPath = "ex3/01_nvt_n4/fld/n4f6/level/n4f6",
-                    TerritoryTypeId = 818,
-                    CameraPosition = new(22.773487f, -61.84117f, 757.2081f),
-                    Yaw = -1.1805015f,
-                    Roll = 0.0f,
-                    Pitch = 0.29725394f,
-                    Fov = 45.0f,
-                    WeatherId = 1,
-                    TimeOffset = 0,
-                    BgmId = 0,
-                    BgmPath = "music/ffxiv/orchestrion/bgm_orch_430.scd",
-                    SaveLayout = false,
-                    SaveFestivals = false,
-                    UiColor = UiColors.Dawntrail,
-                    Npcs =
-                    [
+                        },
                         new()
                         {
-                            ENpcId = 1022686,
-                            Position = new(-316.60f, -72.60f, 829.80f),
-                            Rotation = 1.29f,
-                            Scale = 6.00f
+                            ENpcId = 1025939,
+                            Position = new(-200.20f, -699.60f, -32.50f),
+                            Rotation = 0.70f,
+                            Scale = 1.50f
                         }
                     ]
                 }
@@ -312,6 +362,13 @@ namespace TitleEdit.PluginServices.Preset
                             Position = new(-496.90f, 417.10f, 207.60f),
                             Rotation = -1.75f,
                             Scale = 7.00f
+                        },
+                        new()
+                        {
+                            ENpcId = 1025939,
+                            Position = new(-408.50f, 417.10f, 95.50f),
+                            Rotation = -1.76f,
+                            Scale = 27.30f
                         }
                     ]
                 }
@@ -347,6 +404,13 @@ namespace TitleEdit.PluginServices.Preset
                             Position = new(-521.00f, -158.10f, -523.30f),
                             Rotation = 1.52f,
                             Scale = 0.60f
+                        },
+                        new()
+                        {
+                            ENpcId = 1025939,
+                            Position = new(-518.60f, -158.10f, -523.40f),
+                            Rotation = -1.76f,
+                            Scale = 1.70f
                         }
                     ]
                 }
@@ -382,41 +446,13 @@ namespace TitleEdit.PluginServices.Preset
                             Position = new(201.70f, -31.90f, 382.00f),
                             Rotation = -2.71f,
                             Scale = 1.00f
-                        }
-                    ]
-                }
-            });
-            AddPreset(new()
-            {
-                Name = "TE_Dalamud 2",
-                FileName = "?/TE_Dalamud 2.json",
-                BuiltIn = true,
-                LocationModel = new()
-                {
-                    LocationType = LocationType.TitleScreen,
-                    TitleScreenLogo = TitleScreenLogo.None,
-                    TerritoryPath = "ffxiv/wil_w1/twn/w1t1/level/w1t1",
-                    TerritoryTypeId = 130,
-                    CameraPosition = new(-124.29569f, 20.383795f, -96.238174f),
-                    Yaw = 1.9675864f,
-                    Roll = 0.0f,
-                    Pitch = 0.08992102f,
-                    Fov = 45.0f,
-                    WeatherId = 101,
-                    TimeOffset = 800,
-                    BgmId = 237,
-                    BgmPath = "music/ffxiv/BGM_Con_Bahamut_Bigboss2.scd",
-                    SaveLayout = false,
-                    SaveFestivals = false,
-                    UiColor = UiColors.Dawntrail,
-                    Npcs =
-                    [
+                        },
                         new()
                         {
-                            ENpcId = 1022686,
-                            Position = new(-84.60f, 4.00f, -125.40f),
-                            Rotation = 1.85f,
-                            Scale = 1.00f
+                            ENpcId = 1025939,
+                            Position = new(197.00f, -32.10f, 374.10f),
+                            Rotation = -1.10f,
+                            Scale = 1.50f
                         }
                     ]
                 }
@@ -452,6 +488,55 @@ namespace TitleEdit.PluginServices.Preset
                             Position = new(269.60f, 69.20f, -132.20f),
                             Rotation = -2.74f,
                             Scale = 1.00f
+                        },
+                        new()
+                        {
+                            ENpcId = 1025939,
+                            Position = new(234.90f, 31.90f, -4.10f),
+                            Rotation = -2.79f,
+                            Scale = 5.00f
+                        }
+                    ]
+                }
+            });
+            AddPreset(new()
+            {
+                Name = "TE_Dalamud 2",
+                FileName = "?/TE_Dalamud 2.json",
+                BuiltIn = true,
+                LocationModel = new()
+                {
+                    LocationType = LocationType.TitleScreen,
+                    TitleScreenLogo = TitleScreenLogo.None,
+                    TerritoryPath = "ffxiv/wil_w1/twn/w1t1/level/w1t1",
+                    TerritoryTypeId = 130,
+                    CameraPosition = new(-124.29569f, 20.383795f, -96.238174f),
+                    Yaw = 1.9675864f,
+                    Roll = 0.0f,
+                    Pitch = 0.08992102f,
+                    Fov = 45.0f,
+                    WeatherId = 101,
+                    TimeOffset = 800,
+                    BgmId = 237,
+                    BgmPath = "music/ffxiv/BGM_Con_Bahamut_Bigboss2.scd",
+                    SaveLayout = false,
+                    SaveFestivals = false,
+                    UiColor = UiColors.Dawntrail,
+                    Npcs =
+                    [
+                        new()
+                        {
+                            ENpcId = 1022686,
+                            Position = new(-84.60f, 4.00f, -125.40f),
+                            Rotation = 1.85f,
+                            Scale = 1.00f
+                        },
+                        new()
+                        {
+                            ENpcId = 1025939,
+                            Position = new(-84.60f, 4.00f, -124.40f),
+                            Rotation = 1.90f,
+                            Scale = 2.00f
                         }
                     ]
                 }
@@ -486,6 +571,13 @@ namespace TitleEdit.PluginServices.Preset
                             ENpcId = 1022686,
                             Position = new(56.20f, 16.10f, 163.20f),
                             Rotation = 2.57f,
+                            Scale = 1.00f
+                        },
+                        new()
+                        {
+                            ENpcId = 1025939,
+                            Position = new(66.00f, 11.00f, 152.70f),
+                            Rotation = 2.60f,
                             Scale = 1.00f
                         }
                     ]
@@ -522,6 +614,13 @@ namespace TitleEdit.PluginServices.Preset
                             Position = new(-206.30f, 542.70f, -814.50f),
                             Rotation = -0.51f,
                             Scale = 6.90f
+                        },
+                        new()
+                        {
+                            ENpcId = 1025939,
+                            Position = new(-206.30f, 553.90f, -813.30f),
+                            Rotation = -0.51f,
+                            Scale = 9.10f
                         }
                     ]
                 }
@@ -557,6 +656,13 @@ namespace TitleEdit.PluginServices.Preset
                             Position = new(142.50f, -8.90f, 56.90f),
                             Rotation = 2.50f,
                             Scale = 1.00f
+                        },
+                        new()
+                        {
+                            ENpcId = 1025939,
+                            Position = new(146.50f, -8.90f, 59.90f),
+                            Rotation = 1.43f,
+                            Scale = 2.70f
                         }
                     ]
                 }
@@ -592,6 +698,13 @@ namespace TitleEdit.PluginServices.Preset
                             Position = new(-131.60f, 5.20f, 41.40f),
                             Rotation = -0.24f,
                             Scale = 1.10f
+                        },
+                        new()
+                        {
+                            ENpcId = 1025939,
+                            Position = new(-16.40f, 1.80f, 97.60f),
+                            Rotation = -1.66f,
+                            Scale = 5.50f
                         }
                     ]
                 }
@@ -628,6 +741,13 @@ namespace TitleEdit.PluginServices.Preset
                             Position = new(-321.30f, 0.60f, -430.80f),
                             Rotation = -1.17f,
                             Scale = 1.70f
+                        },
+                        new()
+                        {
+                            ENpcId = 1025939,
+                            Position = new(-372.90f, -0.30f, -337.30f),
+                            Rotation = -0.35f,
+                            Scale = 3.10f
                         }
                     ]
                 }
@@ -663,6 +783,13 @@ namespace TitleEdit.PluginServices.Preset
                             Position = new(25.60f, 44.50f, 210.50f),
                             Rotation = 0.26f,
                             Scale = 1.00f
+                        },
+                        new()
+                        {
+                            ENpcId = 1025939,
+                            Position = new(26.60f, 44.50f, 212.00f),
+                            Rotation = -2.78f,
+                            Scale = 2.10f
                         }
                     ]
                 }
@@ -698,6 +825,13 @@ namespace TitleEdit.PluginServices.Preset
                             Position = new(85.60f, -96.70f, -288.80f),
                             Rotation = -2.02f,
                             Scale = 1.40f
+                        },
+                        new()
+                        {
+                            ENpcId = 1025939,
+                            Position = new(63.40f, -87.00f, -532.50f),
+                            Rotation = 0.24f,
+                            Scale = 19.70f
                         }
                     ]
                 }
@@ -733,6 +867,13 @@ namespace TitleEdit.PluginServices.Preset
                             Position = new(-121.30f, 0.00f, 267.10f),
                             Rotation = -0.47f,
                             Scale = 2.20f
+                        },
+                        new()
+                        {
+                            ENpcId = 1025939,
+                            Position = new(-121.30f, 0.00f, 321.80f),
+                            Rotation = 2.46f,
+                            Scale = 10.00f
                         }
                     ]
                 }
@@ -768,6 +909,13 @@ namespace TitleEdit.PluginServices.Preset
                             Position = new(-636.20f, -281.40f, -211.50f),
                             Rotation = 0.19f,
                             Scale = 75.50f
+                        },
+                        new()
+                        {
+                            ENpcId = 1025939,
+                            Position = new(-519.50f, 8.50f, -18.20f),
+                            Rotation = 2.08f,
+                            Scale = 36.30f
                         }
                     ]
                 }
@@ -804,6 +952,13 @@ namespace TitleEdit.PluginServices.Preset
                             Position = new(132.90f, -16.70f, 146.70f),
                             Rotation = -0.42f,
                             Scale = 1.00f
+                        },
+                        new()
+                        {
+                            ENpcId = 1025939,
+                            Position = new(71.50f, -18.10f, 132.90f),
+                            Rotation = 1.26f,
+                            Scale = 3.10f
                         }
                     ]
                 }
@@ -839,6 +994,13 @@ namespace TitleEdit.PluginServices.Preset
                             Position = new(47.50f, 7.90f, 42.50f),
                             Rotation = -0.79f,
                             Scale = 1.00f
+                        },
+                        new()
+                        {
+                            ENpcId = 1025939,
+                            Position = new(42.30f, 12.10f, 59.70f),
+                            Rotation = 1.26f,
+                            Scale = 2.00f
                         }
                     ]
                 }
@@ -872,6 +1034,13 @@ namespace TitleEdit.PluginServices.Preset
                             Position = new(-0.70f, 0.00f, -0.50f),
                             Rotation = 0.35f,
                             Scale = 0.15f
+                        },
+                        new()
+                        {
+                            ENpcId = 1025939,
+                            Position = new(0.70f, 0.00f, -0.20f),
+                            Rotation = -0.40f,
+                            Scale = 1.00f
                         }
                     ]
                 }
@@ -909,6 +1078,13 @@ namespace TitleEdit.PluginServices.Preset
                             Position = new(82.70f, 0.73f, 45.00f),
                             Rotation = 0.00f,
                             Scale = 0.80f
+                        },
+                        new()
+                        {
+                            ENpcId = 1025939,
+                            Position = new(84.90f, 1.23f, 45.50f),
+                            Rotation = -1.12f,
+                            Scale = 1.40f
                         }
                     ]
                 }
@@ -1066,6 +1242,27 @@ namespace TitleEdit.PluginServices.Preset
                             Position = new(173.40f, 492.96f, -2.80f),
                             Rotation = -2.25f,
                             Scale = 1.00f
+                        },
+                        new()
+                        {
+                            ENpcId = 1025939,
+                            Position = new(77.10f, 496.06f, -17.30f),
+                            Rotation = 2.37f,
+                            Scale = 1.00f
+                        },
+                        new()
+                        {
+                            ENpcId = 1025939,
+                            Position = new(77.40f, 496.06f, -19.70f),
+                            Rotation = 0.35f,
+                            Scale = 1.00f
+                        },
+                        new()
+                        {
+                            ENpcId = 1025939,
+                            Position = new(79.20f, 496.06f, -18.15f),
+                            Rotation = -1.52f,
+                            Scale = 1.00f
                         }
                     ]
                 }
@@ -1099,6 +1296,13 @@ namespace TitleEdit.PluginServices.Preset
                             Position = new(250.80f, 60.64f, 129.65f),
                             Rotation = 0.31f,
                             Scale = 1.00f
+                        },
+                        new()
+                        {
+                            ENpcId = 1025939,
+                            Position = new(237.00f, 66.44f, 175.45f),
+                            Rotation = 0.61f,
+                            Scale = 2.00f
                         }
                     ]
                 }
@@ -1132,6 +1336,13 @@ namespace TitleEdit.PluginServices.Preset
                             Position = new(102.70f, 6.30f, 143.20f),
                             Rotation = 3.14f,
                             Scale = 1.00f
+                        },
+                        new()
+                        {
+                            ENpcId = 1025939,
+                            Position = new(104.40f, 6.30f, 141.50f),
+                            Rotation = -2.84f,
+                            Scale = 2.00f
                         }
                     ]
                 }
@@ -1165,6 +1376,20 @@ namespace TitleEdit.PluginServices.Preset
                             Position = new(100.00f, 12.50f, 38.20f),
                             Rotation = 0.00f,
                             Scale = 1.50f
+                        },
+                        new()
+                        {
+                            ENpcId = 1025939,
+                            Position = new(94.80f, 2.60f, 55.80f),
+                            Rotation = 0.86f,
+                            Scale = 3.00f
+                        },
+                        new()
+                        {
+                            ENpcId = 1025939,
+                            Position = new(105.20f, 2.60f, 55.80f),
+                            Rotation = -0.86f,
+                            Scale = 3.00f
                         }
                     ]
                 }
@@ -1198,6 +1423,13 @@ namespace TitleEdit.PluginServices.Preset
                             Position = new(0.70f, -0.39f, -87.25f),
                             Rotation = -2.84f,
                             Scale = 1.00f
+                        },
+                        new()
+                        {
+                            ENpcId = 1025939,
+                            Position = new(69.60f, 15.81f, -17.15f),
+                            Rotation = -1.78f,
+                            Scale = 3.00f
                         }
                     ]
                 }
@@ -1232,6 +1464,27 @@ namespace TitleEdit.PluginServices.Preset
                             ENpcId = 1022686,
                             Position = new(95.60f, 0.00f, 90.00f),
                             Rotation = 0.60f
+                        },
+                        new()
+                        {
+                            ENpcId = 1025939,
+                            Position = new(105.20f, 0.00f, 89.80f),
+                            Rotation = -0.68f,
+                            Scale = 1.14f
+                        },
+                        new()
+                        {
+                            ENpcId = 1025939,
+                            Position = new(105.60f, 0.00f, 90.60f),
+                            Rotation = -2.18f,
+                            Scale = 0.93f
+                        },
+                        new()
+                        {
+                            ENpcId = 1025939,
+                            Position = new(104.40f, 0.00f, 89.80f),
+                            Rotation = 1.57f,
+                            Scale = 1.07f
                         }
                     ]
                 }
