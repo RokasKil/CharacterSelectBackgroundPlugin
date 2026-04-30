@@ -53,7 +53,7 @@ namespace TitleEdit.PluginServices.Preset
                     }
                     catch (Exception e)
                     {
-                        Services.Log.Error(e, e.Message);
+                        Services.Log.Error(e, $"Failed to load saved preset '{relativeFilePath}'");
                     }
                 }
                 else

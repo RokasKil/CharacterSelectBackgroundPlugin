@@ -1499,7 +1499,7 @@ namespace TitleEdit.PluginServices.Preset
             }
             catch (Exception e)
             {
-                Services.Log.Warning($"Failed to add base preset '{preset.FileName}' with error: {e.Message}");
+                Services.Log.Warning(e, $"Failed to add base preset '{preset.FileName}'");
                 return;
             }
 
