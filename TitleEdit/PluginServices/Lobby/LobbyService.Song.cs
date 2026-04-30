@@ -33,7 +33,7 @@ namespace TitleEdit.PluginServices.Lobby
             // Called when game wants to turn off lobby music when moving back to title screen at LobbyUiStage.UnloadingCharacterSelect2 
             // I don't really see a point to this call because the title screen will call PickSong to play it's own music
             // I NOP it so I can keep the music going if the BGM was the same between char select and title screen
-            stopMusicHook = Hook<StopMusicDelegate>("E8 ?? ?? ?? ?? EB ?? 8B CB E8 ?? ?? ?? ?? C6 87", StopMusicDetour);
+            stopMusicHook = Hook<StopMusicDelegate>("E8 ?? ?? ?? ?? EB ?? 8B CB E8 ?? ?? ?? ?? C6 86", StopMusicDetour);
         }
 
         private void StopMusicDetour(LobbyInfo* self)

@@ -23,7 +23,7 @@ public unsafe partial class LobbyService
     [Signature("40 55 41 57 48 83 EC ?? 48 89 5C 24 ?? 48 8B D9")]
     private readonly delegate*unmanaged<HousingManager*, uint, void> initializeHousingLayout = null!;
 
-    [Signature("0F B7 0D ?? ?? ?? ?? 66 0F 45 C8 48 89 7C 24", ScanType = ScanType.StaticAddress)]
+    [Signature("8B 3D ?? ?? ?? ?? 85 D2", ScanType = ScanType.StaticAddress)]
     private readonly nint territoryTypeAddress = 0;
 
     [Signature("E8 ?? ?? ?? ?? 41 8B 4E ?? 85 C9 74 ?? E8 ?? ?? ?? ?? 48 85 C0 74 ?? 8B 58")]
@@ -143,7 +143,7 @@ public unsafe partial class LobbyService
         }
         else if (housingManager->OutdoorTerritory != null)
         {
-            furnitureArray = housingManager->OutdoorTerritory->FurnitureStruct.FurnitureMemory.GetPointer(0);
+            furnitureArray = housingManager->OutdoorTerritory->FurnitureManager.FurnitureMemory.GetPointer(0);
         }
         else
         {

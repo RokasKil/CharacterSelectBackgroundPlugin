@@ -192,7 +192,7 @@ namespace TitleEdit.PluginServices
             }
         }
 
-        private void TerritoryChanged(ushort territoryId)
+        private void TerritoryChanged(uint territoryId)
         {
             TerritoryPath = TerritoryPaths.GetValueOrDefault(territoryId);
             Services.Log.Debug($"TerritoryChanged: {TerritoryPath}");
@@ -260,9 +260,9 @@ namespace TitleEdit.PluginServices
             locationModel.Inactive = inactive;
             locationModel.VfxTriggerIndexes = vfxTriggerIndexes;
             locationModel.Festivals = Services.LayoutService.LayoutManager->ActiveFestivals
-                                      .ToArray()
-                                      .Select(item => new Festival(item))
-                                      .ToArray();
+                .ToArray()
+                .Select(item => new Festival(item))
+                .ToArray();
 
             if (locationModel is { SaveLayout: true, SaveHousing: true })
             {
@@ -410,7 +410,10 @@ namespace TitleEdit.PluginServices
             {
                 saveTask?.Wait(-1, cancellationToken.Token);
             }
-            catch (OperationCanceledException) { } finally
+            catch (OperationCanceledException)
+            {
+            }
+            finally
             {
                 cancellationToken.Dispose();
             }

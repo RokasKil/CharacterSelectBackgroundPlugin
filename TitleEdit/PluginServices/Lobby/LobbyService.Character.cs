@@ -8,24 +8,21 @@ using Lumina.Excel.Sheets;
 using TitleEdit.Data.Character;
 using TitleEdit.Data.Lobby;
 using TitleEdit.Data.Persistence;
-using TitleEdit.Extensions;
 using TitleEdit.Utility;
+using CSAgentLobby = FFXIVClientStructs.FFXIV.Client.UI.Agent.AgentLobby;
+using CSClientObjectManager = FFXIVClientStructs.FFXIV.Client.Game.Object.ClientObjectManager;
 using Character = FFXIVClientStructs.FFXIV.Client.Game.Character.Character;
 
 namespace TitleEdit.PluginServices.Lobby
 {
     public unsafe partial class LobbyService
     {
-        private delegate void UpdateCharaSelectDisplayDelegate(IntPtr agentLobby, int p2, byte p3);
-
-        private delegate nint CreateBattleCharacterDelegate(nint objectManager, uint index, byte assignCompanion);
-
         private delegate void SetCharSelectCurrentWorldDelegate(ulong p1, byte p2);
 
         private delegate void CharSelectWorldPreviewEventHandlerDelegate(ulong p1, ulong p2, ulong p3, uint p4);
 
-        private Hook<UpdateCharaSelectDisplayDelegate> updateCharaSelectDisplayHook = null!;
-        private Hook<CreateBattleCharacterDelegate> createBattleCharacterHook = null!;
+        private Hook<CSAgentLobby.Delegates.UpdateCharaSelectDisplay> updateCharaSelectDisplayHook = null!;
+        private Hook<CSClientObjectManager.Delegates.CreateBattleCharacter> createBattleCharacterHook = null!;
         private Hook<SetCharSelectCurrentWorldDelegate> setCharSelectCurrentWorldHook = null!;
         private Hook<CharSelectWorldPreviewEventHandlerDelegate> charSelectWorldPreviewEventHandlerHook = null!;
 
@@ -47,10 +44,11 @@ namespace TitleEdit.PluginServices.Lobby
             // Called every frame and is responsible for switching out currently selected character
             // We had proper methods to hook but they got inlined with release of DT so now we're polling
             // Client::UI::Agent::AgentLobby.UpdateCharaSelectDisplay
-            updateCharaSelectDisplayHook = Hook<UpdateCharaSelectDisplayDelegate>("E8 ?? ?? ?? ?? 84 C0 74 ?? C6 87 ?? ?? ?? ?? ?? 80 BF ?? ?? ?? ?? ?? 74", UpdateCharaSelectDisplayDetour);
+
+            updateCharaSelectDisplayHook = Hook<CSAgentLobby.Delegates.UpdateCharaSelectDisplay>(CSAgentLobby.Addresses.UpdateCharaSelectDisplay.String, UpdateCharaSelectDisplayDetour);
 
             // Called when the game is making a new character - if set by other hooks we force the flag to include a companionObject so we can display a mount
-            createBattleCharacterHook = Hook<CreateBattleCharacterDelegate>("E8 ?? ?? ?? ?? 8B D0 41 89 44", CreateBattleCharacterDetour);
+            createBattleCharacterHook = Hook<CSClientObjectManager.Delegates.CreateBattleCharacter>(CSClientObjectManager.Addresses.CreateBattleCharacter.String, CreateBattleCharacterDetour);
 
             // Called when you load into character select, select a new world in character select or cancel selection so it reload the current
             // we use it make sure characters get created with a companion slots,
@@ -61,11 +59,11 @@ namespace TitleEdit.PluginServices.Lobby
         }
 
         // Called every frame and is responsible for switching out currently selected character
-        private void UpdateCharaSelectDisplayDetour(nint agentLobby, int p2, byte p3)
+        private bool UpdateCharaSelectDisplayDetour(AgentLobby* thisPtr, sbyte index, bool a2)
         {
             //Services.Log.Debug($"UpdateCharaSelectDisplayDetour {p2}, {p3}");
             var preUpdateCharacter = CurrentCharacter;
-            updateCharaSelectDisplayHook.Original(agentLobby, p2, p3);
+            var result = updateCharaSelectDisplayHook.Original(thisPtr, index, a2);
             if (preUpdateCharacter != CurrentCharacter)
             {
                 Services.Log.Debug($"CurrentChar changed {(IntPtr)preUpdateCharacter:X} - {(IntPtr)CurrentCharacter:X}");
@@ -76,6 +74,8 @@ namespace TitleEdit.PluginServices.Lobby
 
                 UpdateCharacter();
             }
+
+            return result;
         }
 
         // We do polling cause it's simpler than figuring when exactly are mounts and stuff are good to draw
@@ -161,7 +161,7 @@ namespace TitleEdit.PluginServices.Lobby
                 if (gameObject != null)
                 {
                     Services.Log.Debug($"Setting position for {(IntPtr)gameObject:X}");
-                    gameObject->SetPosition(characterSelectLocationModel.Position);
+                    gameObject->SetPosition(characterSelectLocationModel.Position.X, characterSelectLocationModel.Position.Y, characterSelectLocationModel.Position.Z);
                 }
             }
         }
@@ -220,9 +220,9 @@ namespace TitleEdit.PluginServices.Lobby
         }
 
         // Make sure characters are created with companion slot (for mounts) and positioned properly
-        private nint CreateBattleCharacterDetour(nint objectManager, uint index, byte assignCompanion)
+        private uint CreateBattleCharacterDetour(ClientObjectManager* thisPtr, uint index, byte assignCompanion)
         {
-            var result = createBattleCharacterHook.Original(objectManager, index, creatingCharSelectGameObjects ? (byte)1 : assignCompanion);
+            var result = createBattleCharacterHook.Original(thisPtr, index, creatingCharSelectGameObjects ? (byte)1 : assignCompanion);
             if (creatingCharSelectGameObjects)
             {
                 // When making a new character make sure it's created with a companion and also prematurely set it's position to avoid some camera jank

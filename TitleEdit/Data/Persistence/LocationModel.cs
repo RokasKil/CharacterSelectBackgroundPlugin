@@ -21,7 +21,7 @@ namespace TitleEdit.Data.Persistence
         public LocationType LocationType = LocationType.TitleScreen;
         public TitleScreenLogo TitleScreenLogo = TitleScreenLogo.Dawntrail;
         public string TerritoryPath = ""; // TODO: Why am I even saving both
-        public ushort TerritoryTypeId;
+        public uint TerritoryTypeId;
         public uint LayoutTerritoryTypeId;
         public uint LayoutLayerFilterKey;
         public Vector3 Position;

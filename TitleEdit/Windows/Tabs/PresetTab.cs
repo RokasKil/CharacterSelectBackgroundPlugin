@@ -703,7 +703,7 @@ namespace TitleEdit.Windows.Tabs
                         liveEditingLocationType = preset.LocationModel.LocationType;
                     }
 
-                    if (disabled.Success && !buttonsDisabled.Success)
+                    if (disabled.Count != 0 && buttonsDisabled.Count == 0)
                     {
                         using (ImRaii.Enabled())
                             GuiUtils.HoverTooltip($"Only works in title or character select screen depending on the selected preset", ImGuiHoveredFlags.AllowWhenDisabled);

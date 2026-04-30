@@ -42,7 +42,7 @@ public class HousingService : AbstractService
         }
         else if (housingManager->OutdoorTerritory != null)
         {
-            furnitureList = housingManager->OutdoorTerritory->FurnitureStruct.FurnitureMemory;
+            furnitureList = housingManager->OutdoorTerritory->FurnitureManager.FurnitureMemory;
 
             var layoutManager = LayoutWorld.Instance()->ActiveLayout;
             if (layoutManager != null && layoutManager->OutdoorAreaData != null)
@@ -55,8 +55,8 @@ public class HousingService : AbstractService
                     {
                         Plot = plotIndex,
                         Fixtures = layoutManager->OutdoorAreaData->Plots[plotIndex].Fixture.ToArray()
-                                                                                   .Select(fixture => new OutdoorPlotFixtureData(fixture))
-                                                                                   .ToArray()
+                            .Select(fixture => new OutdoorPlotFixtureData(fixture))
+                            .ToArray()
                     });
                 }
             }
