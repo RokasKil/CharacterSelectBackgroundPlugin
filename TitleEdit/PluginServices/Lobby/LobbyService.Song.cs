@@ -1,5 +1,9 @@
 using Dalamud.Hooking;
 using System;
+using System.Text;
+using Dalamud.Memory;
+using FFXIVClientStructs.FFXIV.Client.Sound;
+using InteropGenerator.Runtime;
 using TitleEdit.Data.BGM;
 using TitleEdit.Data.Lobby;
 using TitleEdit.Utility;
@@ -8,13 +12,11 @@ namespace TitleEdit.PluginServices.Lobby
 {
     public unsafe partial class LobbyService
     {
-        private delegate nint PlayMusicDelegate(LobbyInfo* self, string filename, float volume, uint fadeTime);
-
         private delegate void PickSongDelegate(LobbyInfo* self, LobbySong* musicIndex);
 
         private delegate void StopMusicDelegate(LobbyInfo* self);
 
-        private Hook<PlayMusicDelegate> playMusicHook = null!;
+        private Hook<SoundManager.Delegates.PlayGAYATitleSound> playMusicHook = null!;
         private Hook<PickSongDelegate> pickSongHook = null!;
         private Hook<StopMusicDelegate> stopMusicHook = null!;
 
@@ -27,7 +29,7 @@ namespace TitleEdit.PluginServices.Lobby
         private void HookSong()
         {
             // Called when a different lobby (and some other) music needs to be loaded - we force call the game to call it by resetting the CurrentLobbyMusicIndex value
-            playMusicHook = Hook<PlayMusicDelegate>("E8 ?? ?? ?? ?? 48 89 47 18 89 5F 20", PlayMusicDetour);
+            playMusicHook = Hook<SoundManager.Delegates.PlayGAYATitleSound>(SoundManager.Addresses.PlayGAYATitleSound.String, PlayMusicDetour);
             // Called when game switches lobby music to a different type -
             pickSongHook = Hook<PickSongDelegate>("E8 ?? ?? ?? ?? 33 C9 E8 ?? ?? ?? ?? 48 8B 0D", PickSongDetour);
             // Called when game wants to turn off lobby music when moving back to title screen at LobbyUiStage.UnloadingCharacterSelect2 
@@ -65,11 +67,11 @@ namespace TitleEdit.PluginServices.Lobby
         }
 
         private static bool IsTitleScreenMusic(LobbySong musicIndex) => musicIndex is LobbySong.ARealmRebornTitle
-                                                                            or LobbySong.HeavensWardTitle
-                                                                            or LobbySong.StormbloodTitle
-                                                                            or LobbySong.ShadowbringersTitle
-                                                                            or LobbySong.EndwalkerTitle
-                                                                            or LobbySong.DawntrailTitle;
+            or LobbySong.HeavensWardTitle
+            or LobbySong.StormbloodTitle
+            or LobbySong.ShadowbringersTitle
+            or LobbySong.EndwalkerTitle
+            or LobbySong.DawntrailTitle;
 
         private String? GetBgmPath(LobbySong musicIndex)
         {
@@ -128,16 +130,20 @@ namespace TitleEdit.PluginServices.Lobby
         }
 
         // TODO: figure out looping on tracks that don't loop
-        private nint PlayMusicDetour(LobbyInfo* self, string filename, float volume, uint fadeTime)
+        private SoundData* PlayMusicDetour(SoundManager* thisPtr, CStringPointer path, float volume, uint fadeInDuration)
         {
-            Services.Log.Debug($"PlayMusicDetour {LobbyUiStage} {LobbyInfo->CurrentLobbyMusicIndex} {(nint)self:X} {filename} {volume} {fadeTime}");
+            Services.Log.Debug($"PlayMusicDetour {LobbyUiStage} {LobbyInfo->CurrentLobbyMusicIndex} {(nint)thisPtr:X} {path} {volume} {fadeInDuration}");
             if (changeBgm)
             {
-                lastBgmPath = filename = GetBgmPath(lastMusicIndex) ?? "music/ffxiv/BGM_Null.scd";
-                Services.Log.Debug($"Setting music to {filename}");
+                lastBgmPath = GetBgmPath(lastMusicIndex) ?? "music/ffxiv/BGM_Null.scd";
+                Services.Log.Debug($"Setting music to {lastBgmPath}");
+                fixed (byte* ptr = Encoding.UTF8.GetBytes(lastBgmPath).NullTerminate())
+                {
+                    return playMusicHook.Original(thisPtr, new CStringPointer(ptr), volume, fadeInDuration);
+                }
             }
 
-            return playMusicHook.Original(self, filename, volume, fadeTime);
+            return playMusicHook.Original(thisPtr, path, volume, fadeInDuration);
         }
     }
 }

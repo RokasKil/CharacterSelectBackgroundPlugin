@@ -7,6 +7,8 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Runtime.InteropServices;
+using System.Threading;
+using System.Threading.Tasks;
 using TitleEdit.Data.Bgm;
 using TitleEdit.Data.BGM;
 using TitleEdit.Utility;
@@ -58,6 +60,8 @@ namespace TitleEdit.PluginServices
 
         public unsafe event BgmChangedDelegate? OnBgmChange;
 
+        private readonly CancellationTokenSource disposeCts = new();
+
         public BgmService()
         {
             baseAddress = Services.SigScanner.GetStaticAddressFromSig("48 8B 1D ?? ?? ?? ?? 8B F1");
@@ -68,15 +72,32 @@ namespace TitleEdit.PluginServices
 
         public override void LoadData()
         {
+            Services.Log.Information("[SongList] Loading local version");
+            bool failedToLoadLocal = false;
             try
             {
-                Services.Log.Information("[SongList] Checking for updated bgm sheets");
-                LoadLangSheet(GetRemoteSheet("en"), "en");
+                LoadLangSheet(GetLocalSheet("en"), "en");
             }
             catch (Exception e)
             {
-                Services.Log.Error(e, "[SongList] Failed to update bgm sheet; using previous version");
-                LoadLangSheet(GetLocalSheet("en"), "en");
+                failedToLoadLocal = true;
+                Services.Log.Error(e, "[SongList] Failed to load local version");
+            }
+
+            Task loadRemoteTask = LoadRemoteData(disposeCts.Token);
+            if (failedToLoadLocal)
+            {
+                loadRemoteTask.GetAwaiter().GetResult();
+            }
+            else
+            {
+                loadRemoteTask.ContinueWith(t =>
+                {
+                    if (t.IsFaulted)
+                    {
+                        Services.Log.Error(t.Exception, "[SongList] Failed to load remote version");
+                    }
+                }, TaskContinuationOptions.OnlyOnFaulted);
             }
         }
 
@@ -85,10 +106,17 @@ namespace TitleEdit.PluginServices
             Services.Framework.Update += Tick;
         }
 
-
-        private string GetRemoteSheet(string code)
+        private async Task LoadRemoteData(CancellationToken cancellationToken)
         {
-            return client.GetStringAsync(string.Format(SheetPath, code)).Result;
+            Services.Log.Information("[SongList] Checking for updated bgm sheets");
+            string sheetData = await GetRemoteSheet("en", cancellationToken).ConfigureAwait(false);
+            await Services.Framework.Run(() => LoadLangSheet(sheetData, "en"), cancellationToken).ConfigureAwait(false);
+            Services.Log.Information("[SongList] Loaded remote version");
+        }
+
+        private async Task<string> GetRemoteSheet(string code, CancellationToken cancellationToken)
+        {
+            return await client.GetStringAsync(string.Format(SheetPath, code), cancellationToken);
         }
 
         private string GetLocalSheet(string code)
@@ -165,6 +193,8 @@ namespace TitleEdit.PluginServices
         {
             base.Dispose();
             Services.Framework.Update -= Tick;
+            disposeCts.Cancel();
+            disposeCts.Dispose();
         }
     }
 }
